@@ -1,3 +1,16 @@
+/*
+================================================================================
+FILE        : app.jsx
+AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
+DESCRIPTION : JS file that is used by the root id to launch the website.
+COPYRIGHT   : 31 July 2023
+REVISION HISTORY
+Date: 			By: 		Description:
+31 July 2023    Amodia      Creation of file
+================================================================================
+*/
+
+
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
@@ -10,8 +23,6 @@ import forbidden from './myTables/forbidden'
 import admin from './myTables/admin'
 // import { Pool } from 'pg';
 // import db from './myHelpers/db'
-
-
 
 function App() {
   const [mode, setMode] = useState("admin")
@@ -66,7 +77,7 @@ function App() {
           <NavbarCollapse>
             <Nav className="me-auto">
               <Nav.Link onClick={adminView}>Admin View</Nav.Link>
-              <Nav.Link onClick={clientView} disabled={true}>Client View</Nav.Link>
+              <Nav.Link onClick={clientView}>Client View</Nav.Link>
               <Nav.Link onClick={lpaView}>LPA View</Nav.Link>
               <Nav.Link onClick={dontClick}>Don't Click</Nav.Link>
             </Nav>
