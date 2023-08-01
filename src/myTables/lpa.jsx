@@ -1,3 +1,14 @@
+/*
+================================================================================
+FILE        : lpa.jsx
+AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
+DESCRIPTION : jsx component that displays the Laser Protection Adviser table
+COPYRIGHT   : 31 July 2023
+REVISION HISTORY
+Date: 			By: 		Description:
+31 July 2023    Amodia      Creation of file
+================================================================================
+*/
 import { render } from '@testing-library/react'
 import React from 'react'
 import { Col, Row, Container } from 'react-bootstrap'
