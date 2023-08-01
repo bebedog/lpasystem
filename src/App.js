@@ -91,9 +91,6 @@ function App() {
           modeSwitch()
         }
       </div>
-
-
-
     </>
   );
 }
