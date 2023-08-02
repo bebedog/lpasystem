@@ -52,13 +52,10 @@ function App() {
     switch (mode) {
       case "lpa":
         return lpa()
-        break;
       case 'client':
         return client();
-        break;
       case 'admin':
         return admin();
-        break;
       default:
         return forbidden();
     }
