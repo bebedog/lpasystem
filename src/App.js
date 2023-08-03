@@ -27,15 +27,23 @@ import admin from './myTables/admin'
 
 function App() {
   const [mode, setMode] = useState("admin")
+  const [clientJSON, setClientJSON ] = useState([])
 
   function lpaView() {
     console.log(`lpa view button clicked`)
     setMode('lpa')
   }
 
-  function clientView() {
-    console.log(`client view button clicked`)
-    setMode('client')
+  async function clientView() {
+    await fetch("/clients", {
+      method: 'post'
+    })
+    .then(response => response.json())
+    .then(json => console.log(json))
+
+
+    // console.log(`client view button clicked`)
+    // setMode('client')
   }
 
   function dontClick() {

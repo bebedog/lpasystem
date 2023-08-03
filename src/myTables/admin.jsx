@@ -21,6 +21,12 @@ const { Paragraph } = Typography
 
 function adminView() {
 
+    async function test() {
+        fetch("https://cdn.vox-cdn.com/thumbor/An6MwhZk09PNLYydva_gKcphhkQ=/0x0:1920x1080/920x613/filters:focal(997x370:1303x676):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/61914815/red_dead_redemption_2_screenshot_06_1920.1540522651.jpg")
+        .then(response => response.blob)
+        .then(blob => console.log(blob))
+    }
+
 
     async function fetchClientTable() {
         const clients = await fetch("/clients", {
@@ -59,6 +65,9 @@ function adminView() {
                     <Tooltip title='click me and watch console!'>
                         <Button type='primary' onClick={fetchClientTable} >Backend</Button>
                     </Tooltip>
+                    <Button onClick={test}>
+                    red dead
+                    </Button>
         </Container>
 
 
