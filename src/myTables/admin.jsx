@@ -29,7 +29,7 @@ function adminView() {
 
 
     async function fetchClientTable() {
-        const clients = await fetch("/clients", {
+        const clients = await fetch("https://lpa-server.onrender.com/clients", {
             method: 'post'
         })
         .then(response => response.json())
