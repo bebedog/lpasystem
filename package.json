@@ -2,6 +2,7 @@
   "name" : "client",
   "version": "0.1.0",
   "private": true,
+  "proxy" : "https://lpa-server.onrender.com",
   "dependencies": {
     "@ant-design/icons": "^5.2.1",
     "@emotion/react": "^11.11.1",
