@@ -32,8 +32,7 @@ function adminView() {
         const clients = await fetch("/clients", {
             method: 'post'
         })
-        .then(response => response.json())
-        .then(json => console.log(JSON.stringify(json, null, 2)))
+        .then(response => console.log(response))
     }
     return (
         <Container>
