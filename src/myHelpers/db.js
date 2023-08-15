@@ -1,19 +1,31 @@
+// This is the helper function file for database fetching
 
-const { Pool } = require('pg')
 
-// const pool = new Pool({
-//     host: 'localhost',
-//     port: '5432',
-//     password: 'SirErrot22!',
-//     connectionTimeoutMillis: 2000,
-//     idleTimeoutMillis: 10000,
-//     max: 10
-// })
+// This function has no parameters 
+// (but in the future a few parameters will be added for a more customized display of data e.g. alphabetical etc.,)
 
-function fetchAll(){
-    // pool.query("SELECT * from public.company").then(response => {
-    //     console.log(response)
-    // })
+
+/**
+ * 
+ * @returns an array of object which is the result of the query.
+ */
+const fetchClients = () => {
+    return(
+        new Promise(async (resolve, reject) => {
+            var requestOptions = {
+                method: 'POST',
+                redirect: 'follow',
+            }
+            
+            await fetch('/clients', requestOptions)
+            .then(response => response.text())
+            .then(text => {
+                const myObj = JSON.parse(text)
+                console.log(myObj)
+                resolve(myObj.rows)
+            })
+        })
+    )
 }
 
-export default fetchAll
+export {fetchClients}

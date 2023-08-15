@@ -12,7 +12,7 @@ Date: 			By: 		Description:
 ================================================================================
 */
 
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Button, Input, Space, Table, Row, Popconfirm } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
@@ -20,6 +20,7 @@ import mockaroo from "../myHelpers/mycompanydatabase";
 import { clear } from "@testing-library/user-event/dist/clear";
 import ViewClientModal from './amodiaComponents/ViewClientModal'
 import EditClientModal from './amodiaComponents/EditClientModal'
+import { fetchClients } from '../myHelpers/db';
 
 
 /*
@@ -44,7 +45,20 @@ function ClientTable() {
     const [selectedClient, setSelectedClient] = useState(null)
     const [isViewVisible, setViewVisible] = useState(false)
     const [isEditVisible, setEditVisible] = useState(false)
+
+    // this state contains all the data of the query.
+    const [myClients, setMyClients] = useState([])
+
     const searchInput = useRef(null);
+
+    // Whenever something changes(a CRUD update or something),
+    // The webapp needs to re-render the content of the table.
+    // We can do that with the help of the useEffect webhook.
+    useEffect(() => {
+        fetchClients().then((data) => {
+            setMyClients(data)
+        })
+    },[])
 
 
     // This method handles the event when either VIEW or EDIT is clicked.
@@ -88,6 +102,11 @@ function ClientTable() {
                 resolve(myClient.id)
             }, 3000)
         })
+    }
+
+    const handleTestDB = () => {
+        fetchClients()
+        .then(response => console.log(response))
     }
 
 
@@ -222,7 +241,8 @@ function ClientTable() {
         },
         {
             title: "Email Address",
-            dataIndex: "email_address",
+            // dataIndex: "email_address",
+            dataIndex: "email",
             key: "email_address",
             width: 350,
             ...getColumnSearchProps("email_address")
@@ -239,9 +259,9 @@ function ClientTable() {
             key: "contract_start"
         },
         {
-            title: "End of Contract",
-            dataIndex: "contract_end",
-            key: "contract_end"
+            title: "Audit Date",
+            dataIndex: "audit_date",
+            key: "audit_date"
         },
         {
             title: "Actions",
@@ -276,7 +296,8 @@ function ClientTable() {
         <>
             <Table
                 columns={clientColumns}
-                dataSource={mockaroo}
+                // dataSource={mockaroo}
+                dataSource={myClients}
                 //set pagination option to bottom center
                 pagination={{ position: ["bottomCenter"] }}
                 size="large"
@@ -297,6 +318,8 @@ function ClientTable() {
                         onCancel={handleEditCancel}
                     />
                 </> : null}
+
+                <Button onClick={handleTestDB}>Test DB</Button>
         </>
     )
 }

@@ -20,6 +20,8 @@ import {Menu, Layout, theme, Button, Input, Space, Table} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import mockaroo from "./myHelpers/mycompanydatabase.js";
+// database helpers
+import db from './myHelpers/db'
 
 /*
 * For the Layout and Menu documentation, go to:
