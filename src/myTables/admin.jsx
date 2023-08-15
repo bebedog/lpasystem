@@ -18,7 +18,6 @@ function adminView() {
     return (
         <Container>
             <h2 className='text-center'>Admin View</h2>
-            
         </Container>
     )
 }

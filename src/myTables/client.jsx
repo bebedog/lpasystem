@@ -12,12 +12,14 @@ Date: 			By: 		Description:
 ================================================================================
 */
 
-import React, {useState, useRef} from 'react'
-import {Button, Input, Space, Table} from 'antd';
-import {SearchOutlined} from '@ant-design/icons';
+import React, { useState, useRef } from 'react'
+import { Button, Input, Space, Table, Row, Popconfirm } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import mockaroo from "../myHelpers/mycompanydatabase";
-import {clear} from "@testing-library/user-event/dist/clear";
+import { clear } from "@testing-library/user-event/dist/clear";
+import ViewClientModal from './amodiaComponents/ViewClientModal'
+import EditClientModal from './amodiaComponents/EditClientModal'
 
 
 /*
@@ -39,7 +41,55 @@ RETURNS     : Table object
 function ClientTable() {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
+    const [selectedClient, setSelectedClient] = useState(null)
+    const [isViewVisible, setViewVisible] = useState(false)
+    const [isEditVisible, setEditVisible] = useState(false)
     const searchInput = useRef(null);
+
+
+    // This method handles the event when either VIEW or EDIT is clicked.
+    const handleActionClick = (event) => {
+        // Take the data content of the column.
+        const mySelectedClient = event.target.getAttribute('data')
+        setSelectedClient(mySelectedClient)
+
+        // Since this function is used by three buttons,
+        // We need to make a switch statement to determine which button was pressed.
+        const handler = event.target.getAttribute('handler')
+        switch (handler) {
+            case "view":
+                setViewVisible(true)
+                break;
+            case "edit":
+                setEditVisible(true)
+                break;
+
+        }
+
+    }
+
+    // this method handles the event when "Cancel" buttons are pressed on the VIEW modal.
+    const handleViewCancel = () => {
+        setViewVisible(false)
+    }
+
+    // This method handles the event when "Cancel" buttons are pressed on the EDIT modal.
+    const handleEditCancel = () => {
+        setEditVisible(false)
+    }
+
+    // This method handles the event where confirm was clicked on the popconfirm for deletion.
+    const handleDelete = () => {
+        const myClient = JSON.parse(selectedClient)
+        console.log('deleting...')
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                console.log('deleted: ', myClient.id)
+                resolve(myClient.id)
+            }, 3000)
+        })
+    }
+
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -51,7 +101,7 @@ function ClientTable() {
         setSearchText('');
     };
     const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters, close}) => (
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div
                 style={{
                     padding: 8,
@@ -73,7 +123,7 @@ function ClientTable() {
                     <Button
                         type="primary"
                         onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined/>}
+                        icon={<SearchOutlined />}
                         size="small"
                         style={{
                             width: 90,
@@ -89,7 +139,7 @@ function ClientTable() {
                                 //closeDropdown will close the search dropdown box after clicking the reset button.
                                 closeDropdown: true
                             }) && handleReset(clearFilters)
-                    }
+                        }
                         size="small"
                         style={{
                             width: 90,
@@ -192,6 +242,29 @@ function ClientTable() {
             title: "End of Contract",
             dataIndex: "contract_end",
             key: "contract_end"
+        },
+        {
+            title: "Actions",
+            dataIndex: "actions",
+            key: "actions",
+            width: 150,
+            render: (_, records) => {
+                return (
+                    <Row justify={'end'}>
+                        <Space>
+                            <a handler={"view"} onClick={handleActionClick} data={JSON.stringify(records)} onCancel={handleViewCancel} >View</a>
+                            <a handler={"edit"} onClick={handleActionClick} data={JSON.stringify(records)} onCancel={handleEditCancel}>Edit</a>
+                            <Popconfirm
+                                title='Delete from database'
+                                description='This is a permanent action. And this data will be lost forever!'
+                                onConfirm={handleDelete}
+                            >
+                                <a handler={"delete"} onClick={handleActionClick} data={JSON.stringify(records)}>Delete</a>
+                            </Popconfirm>
+                        </Space>
+                    </Row>
+                )
+            }
         }
     ]
 
@@ -205,12 +278,25 @@ function ClientTable() {
                 columns={clientColumns}
                 dataSource={mockaroo}
                 //set pagination option to bottom center
-                pagination={{position: ["bottomCenter"]}}
-                size = "large"
+                pagination={{ position: ["bottomCenter"] }}
+                size="large"
                 bordered
-                scroll = {{x:1300}}
-                onChange = {onChange}
+                scroll={{ x: 1300 }}
+                onChange={onChange}
             />
+            {selectedClient != null ?
+                <>
+                    <ViewClientModal
+                        open={isViewVisible}
+                        selectedClient={selectedClient}
+                        onCancel={handleViewCancel}
+                    />
+                    <EditClientModal
+                        open={isEditVisible}
+                        selectedClient={selectedClient}
+                        onCancel={handleEditCancel}
+                    />
+                </> : null}
         </>
     )
 }

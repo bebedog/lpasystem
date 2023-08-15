@@ -39,7 +39,8 @@ const {
 const items = [
     {
         label: "Administrator View",
-        key: 'admin'
+        key: 'admin',
+        disabled: true
     },
     {
         label: 'Client View',
@@ -48,11 +49,13 @@ const items = [
     },
     {
         label: 'LPA View',
-        key: 'lpa'
+        key: 'lpa',
+        disabled: true
     },
     {
         label: 'Forbidden',
-        key: 'forbid'
+        key: 'forbid',
+        disabled: true
     }
 ]
 

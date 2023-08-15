@@ -1,4 +1,3 @@
-// import { Pool } from "pg"
 
 const { Pool } = require('pg')
 
