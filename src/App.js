@@ -10,13 +10,16 @@ Date: 			By: 		Description:
 04 Aug 2023     Sigaya      Revised layout, used Ant Design library
 ================================================================================
 */
-import React, {useState} from 'react';
-import ClientTable from './myTables/client'
+import React, {useState, useRef} from 'react';
+import ClientTable, {clientColumns} from './myTables/client'
 import lpaTable from './myTables/lpa'
 import forbidden from './myTables/forbidden'
 import adminView from "./myTables/admin";
 //import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
-import {Menu, Layout, theme} from 'antd';
+import {Menu, Layout, theme, Button, Input, Space, Table} from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
+import mockaroo from "./myHelpers/mycompanydatabase.js";
 
 /*
 * For the Layout and Menu documentation, go to:
@@ -32,6 +35,7 @@ const {
 } = Layout;
 
 //Declare the items that the user will click in the navigation bar
+//REVISE THIS ONE
 const items = [
     {
         label: "Administrator View",
@@ -88,14 +92,7 @@ function App() {
     docs: https://react.dev/learn/state-a-components-memory
 
      */
-    const [mode, setMode] = useState('admin')
-
-    /*
-        const onClickNav = (mode) => {
-            console.log('clicked any button');
-            setMode(mode.key);
-        };
-    */
+    const [mode, setMode] = useState('client');
 
     //anonymous variable
     const {
@@ -127,7 +124,7 @@ function App() {
                     {/*     alt = "Lasermet Logo"*/}
                     {/*height = "100px"*/}
                     {/*width = "100px"*/}
-                    {/*/>*/}
+                    {/*!/>*/}
                     {/*Navigation bar
                     Recommendation: try utilizing react routing (react-router-dom)?
                     */}
@@ -162,7 +159,7 @@ function App() {
                 </Footer>
             </Layout>
         </>
-    );
+);
 }
 
 export default App;

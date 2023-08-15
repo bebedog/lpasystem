@@ -81,4 +81,5 @@ function lpaTable() {
     )
 }
 
-export default lpaTable
+export default lpaTable;
+export {LPAColumns};
