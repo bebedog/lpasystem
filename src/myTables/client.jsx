@@ -12,12 +12,17 @@ Date: 			By: 		Description:
 ================================================================================
 */
 
-import React, {useState, useRef} from 'react'
-import {Button, Input, Space, Table} from 'antd';
-import {SearchOutlined} from '@ant-design/icons';
+import React, { useState, useRef, useEffect } from 'react'
+import { Button, Input, Space, Table, Row, Popconfirm, message, Col } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import mockaroo from "../myHelpers/mycompanydatabase";
-import {clear} from "@testing-library/user-event/dist/clear";
+import { clear } from "@testing-library/user-event/dist/clear";
+import ViewClientModal from './amodiaComponents/ViewClientModal'
+import EditClientModal from './amodiaComponents/EditClientModal'
+import AddNewClientModal from './amodiaComponents/AddNewClientModal';
+import { deleteEntry, fetchClients } from '../myHelpers/db';
+
 
 
 /*
@@ -39,7 +44,93 @@ RETURNS     : Table object
 function ClientTable() {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
+    const [selectedClient, setSelectedClient] = useState(null)
+    const [isViewVisible, setViewVisible] = useState(false)
+    const [isEditVisible, setEditVisible] = useState(false)
+    const [isCreateNewVisible, setCreateNewVisible] = useState(false)
+    const [messageApi, contextHolder] = message.useMessage()
+
+    // this state contains all the data of the query.
+    const [myClients, setMyClients] = useState([])
+
+    // this state is to display a loading spinner to the table whenever an update happens
+    const [isLoading, setLoading] = useState(true)
+
     const searchInput = useRef(null);
+
+
+    // functions for Message boxes
+    const msgbox = (type, content) => {
+        messageApi.open({
+            type: type,
+            content: content
+        })
+    }
+
+    // Whenever something changes(a CRUD update or something),
+    // The webapp needs to re-render the content of the table.
+    // We can do that with the help of the useEffect webhook.
+    useEffect(() => {
+        setLoading(true)
+        fetchClients().then((data) => {
+            setMyClients(data)
+            setLoading(false)
+        })
+    }, [])
+
+    const handleCreateNewClicked = () => {
+        setCreateNewVisible(true)
+    }
+
+
+    // This method handles the event when either VIEW or EDIT is clicked.
+    const handleActionClick = (event) => {
+        // Take the data content of the column.
+        const mySelectedClient = event.target.getAttribute('data')
+        setSelectedClient(mySelectedClient)
+
+        // Since this function is used by three buttons,
+        // We need to make a switch statement to determine which button was pressed.
+        const handler = event.target.getAttribute('handler')
+        switch (handler) {
+            case "view":
+                setViewVisible(true)
+                break;
+            case "edit":
+                setEditVisible(true)
+                break;
+        }
+
+    }
+
+    // this method handles the event when "Cancel" buttons are pressed on the VIEW modal.
+    const handleViewCancel = () => {
+        setViewVisible(false)
+    }
+
+    // This method handles the event when "Cancel" buttons are pressed on the EDIT modal.
+    const handleEditCancel = () => {
+        setEditVisible(false)
+    }
+
+
+    // This method handles the event where confirm was clicked on the popconfirm for deletion.
+    const handleDelete = () => {
+        const myClient = JSON.parse(selectedClient)
+        console.log('deleting...')
+        return new Promise((resolve, reject) => {
+            deleteEntry(myClient.clinic_id)
+                .then(response => {
+                    console.log(response)
+                    fetchClients()
+                        .then(res => {
+                            setMyClients(res)
+                            resolve(msgbox('Success!', response))
+                        })
+                })
+                .catch(error => reject(error))
+        })
+    }
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -51,7 +142,7 @@ function ClientTable() {
         setSearchText('');
     };
     const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters, close}) => (
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div
                 style={{
                     padding: 8,
@@ -73,7 +164,7 @@ function ClientTable() {
                     <Button
                         type="primary"
                         onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined/>}
+                        icon={<SearchOutlined />}
                         size="small"
                         style={{
                             width: 90,
@@ -89,7 +180,7 @@ function ClientTable() {
                                 //closeDropdown will close the search dropdown box after clicking the reset button.
                                 closeDropdown: true
                             }) && handleReset(clearFilters)
-                    }
+                        }
                         size="small"
                         style={{
                             width: 90,
@@ -172,7 +263,8 @@ function ClientTable() {
         },
         {
             title: "Email Address",
-            dataIndex: "email_address",
+            // dataIndex: "email_address",
+            dataIndex: "email",
             key: "email_address",
             width: 350,
             ...getColumnSearchProps("email_address")
@@ -189,9 +281,32 @@ function ClientTable() {
             key: "contract_start"
         },
         {
-            title: "End of Contract",
-            dataIndex: "contract_end",
-            key: "contract_end"
+            title: "Audit Date",
+            dataIndex: "audit_date",
+            key: "audit_date"
+        },
+        {
+            title: "Actions",
+            dataIndex: "actions",
+            key: "actions",
+            width: 150,
+            render: (_, records) => {
+                return (
+                    <Row justify={'end'}>
+                        <Space>
+                            <a handler={"view"} onClick={handleActionClick} data={JSON.stringify(records)} onCancel={handleViewCancel} >View</a>
+                            <a handler={"edit"} onClick={handleActionClick} data={JSON.stringify(records)} onCancel={handleEditCancel}>Edit</a>
+                            <Popconfirm
+                                title='Delete from database'
+                                description='This is a permanent action. And this data will be lost forever!'
+                                onConfirm={handleDelete}
+                            >
+                                <a handler={"delete"} onClick={handleActionClick} data={JSON.stringify(records)}>Delete</a>
+                            </Popconfirm>
+                        </Space>
+                    </Row>
+                )
+            }
         }
     ]
 
@@ -201,16 +316,42 @@ function ClientTable() {
 
     return (
         <>
+            {contextHolder}
+            <Row
+                style={{ width: '100%', background: '#F5F5F5', paddingBottom: 15, paddingRight: 15 }}
+                justify={'end'}>
+                <Button type='primary' onClick={handleCreateNewClicked}>Add New Client</Button>
+            </Row>
             <Table
                 columns={clientColumns}
-                dataSource={mockaroo}
+                // dataSource={mockaroo}
+                dataSource={myClients}
                 //set pagination option to bottom center
-                pagination={{position: ["bottomCenter"]}}
-                size = "large"
+                pagination={{ position: ["bottomCenter"] }}
+                size="large"
                 bordered
-                scroll = {{x:1300}}
-                onChange = {onChange}
+                scroll={{ x: 1300 }}
+                onChange={onChange}
+                loading={isLoading}
+
             />
+            {selectedClient != null ?
+                <>
+                    <ViewClientModal
+                        open={isViewVisible}
+                        selectedClient={selectedClient}
+                        onCancel={handleViewCancel}
+                    />
+                    <EditClientModal
+                        open={isEditVisible}
+                        selectedClient={selectedClient}
+                        onCancel={handleEditCancel}
+                    />
+                </> : null}
+                <AddNewClientModal
+                open={isCreateNewVisible}
+                onOk={null}
+                onCancel={() => {setCreateNewVisible(false)}} />
         </>
     )
 }

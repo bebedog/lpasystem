@@ -20,6 +20,8 @@ import {Menu, Layout, theme, Button, Input, Space, Table} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import mockaroo from "./myHelpers/mycompanydatabase.js";
+// database helpers
+import db from './myHelpers/db'
 
 /*
 * For the Layout and Menu documentation, go to:
@@ -39,7 +41,8 @@ const {
 const items = [
     {
         label: "Administrator View",
-        key: 'admin'
+        key: 'admin',
+        disabled: true
     },
     {
         label: 'Client View',
@@ -48,11 +51,13 @@ const items = [
     },
     {
         label: 'LPA View',
-        key: 'lpa'
+        key: 'lpa',
+        disabled: true
     },
     {
         label: 'Forbidden',
-        key: 'forbid'
+        key: 'forbid',
+        disabled: true
     }
 ]
 

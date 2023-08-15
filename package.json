@@ -1,6 +1,7 @@
 {
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -43,5 +44,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "name": "lpasystem",
+  "description": "<p>This is the Laser Protection Adviser System, developed by Lasermet. This is developed using React. The system shows the clients and the advisers' related information, and the clients can access contents related to laser safety.</p>",
+  "main": "index.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
 }
