@@ -49,14 +49,19 @@ function ClientTable() {
     // this state contains all the data of the query.
     const [myClients, setMyClients] = useState([])
 
+    // this state is to display a loading spinner to the table whenever an update happens
+    const [isLoading, setLoading] = useState(true)
+
     const searchInput = useRef(null);
 
     // Whenever something changes(a CRUD update or something),
     // The webapp needs to re-render the content of the table.
     // We can do that with the help of the useEffect webhook.
     useEffect(() => {
+        setLoading(true)
         fetchClients().then((data) => {
             setMyClients(data)
+            setLoading(false)
         })
     },[])
 
@@ -98,7 +103,7 @@ function ClientTable() {
         console.log('deleting...')
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                console.log('deleted: ', myClient.id)
+                console.log('deleted: ', myClient.clinic_id)
                 resolve(myClient.id)
             }, 3000)
         })
@@ -304,6 +309,8 @@ function ClientTable() {
                 bordered
                 scroll={{ x: 1300 }}
                 onChange={onChange}
+                loading={isLoading}
+
             />
             {selectedClient != null ?
                 <>
@@ -318,8 +325,6 @@ function ClientTable() {
                         onCancel={handleEditCancel}
                     />
                 </> : null}
-
-                <Button onClick={handleTestDB}>Test DB</Button>
         </>
     )
 }

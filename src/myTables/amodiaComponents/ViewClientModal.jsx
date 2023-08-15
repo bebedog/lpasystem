@@ -11,7 +11,7 @@ const ViewClientModal = ({ selectedClient: myClient, open: open, onCancel: onCan
             <Space direction='vertical'>
                 <Space direction="horizontal">
                     <p>ID: </p>
-                    <p>{client.id}</p>
+                    <p>{client.clinic_id}</p>
                 </Space>
 
                 <Space direction="horizontal">
