@@ -13,14 +13,16 @@ Date: 			By: 		Description:
 */
 
 import React, { useState, useRef, useEffect } from 'react'
-import { Button, Input, Space, Table, Row, Popconfirm } from 'antd';
+import { Button, Input, Space, Table, Row, Popconfirm, message, Col } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import mockaroo from "../myHelpers/mycompanydatabase";
 import { clear } from "@testing-library/user-event/dist/clear";
 import ViewClientModal from './amodiaComponents/ViewClientModal'
 import EditClientModal from './amodiaComponents/EditClientModal'
-import { fetchClients } from '../myHelpers/db';
+import AddNewClientModal from './amodiaComponents/AddNewClientModal';
+import { deleteEntry, fetchClients } from '../myHelpers/db';
+
 
 
 /*
@@ -45,6 +47,8 @@ function ClientTable() {
     const [selectedClient, setSelectedClient] = useState(null)
     const [isViewVisible, setViewVisible] = useState(false)
     const [isEditVisible, setEditVisible] = useState(false)
+    const [isCreateNewVisible, setCreateNewVisible] = useState(false)
+    const [messageApi, contextHolder] = message.useMessage()
 
     // this state contains all the data of the query.
     const [myClients, setMyClients] = useState([])
@@ -53,6 +57,15 @@ function ClientTable() {
     const [isLoading, setLoading] = useState(true)
 
     const searchInput = useRef(null);
+
+
+    // functions for Message boxes
+    const msgbox = (type, content) => {
+        messageApi.open({
+            type: type,
+            content: content
+        })
+    }
 
     // Whenever something changes(a CRUD update or something),
     // The webapp needs to re-render the content of the table.
@@ -63,7 +76,11 @@ function ClientTable() {
             setMyClients(data)
             setLoading(false)
         })
-    },[])
+    }, [])
+
+    const handleCreateNewClicked = () => {
+        setCreateNewVisible(true)
+    }
 
 
     // This method handles the event when either VIEW or EDIT is clicked.
@@ -82,7 +99,6 @@ function ClientTable() {
             case "edit":
                 setEditVisible(true)
                 break;
-
         }
 
     }
@@ -97,23 +113,24 @@ function ClientTable() {
         setEditVisible(false)
     }
 
+
     // This method handles the event where confirm was clicked on the popconfirm for deletion.
     const handleDelete = () => {
         const myClient = JSON.parse(selectedClient)
         console.log('deleting...')
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                console.log('deleted: ', myClient.clinic_id)
-                resolve(myClient.id)
-            }, 3000)
+            deleteEntry(myClient.clinic_id)
+                .then(response => {
+                    console.log(response)
+                    fetchClients()
+                        .then(res => {
+                            setMyClients(res)
+                            resolve(msgbox('Success!', response))
+                        })
+                })
+                .catch(error => reject(error))
         })
     }
-
-    const handleTestDB = () => {
-        fetchClients()
-        .then(response => console.log(response))
-    }
-
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -299,6 +316,12 @@ function ClientTable() {
 
     return (
         <>
+            {contextHolder}
+            <Row
+                style={{ width: '100%', background: '#F5F5F5', paddingBottom: 15, paddingRight: 15 }}
+                justify={'end'}>
+                <Button type='primary' onClick={handleCreateNewClicked}>Add New Client</Button>
+            </Row>
             <Table
                 columns={clientColumns}
                 // dataSource={mockaroo}
@@ -325,6 +348,10 @@ function ClientTable() {
                         onCancel={handleEditCancel}
                     />
                 </> : null}
+                <AddNewClientModal
+                open={isCreateNewVisible}
+                onOk={null}
+                onCancel={() => {setCreateNewVisible(false)}} />
         </>
     )
 }
