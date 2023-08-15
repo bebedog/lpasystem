@@ -196,7 +196,7 @@ function ClientTable() {
     ]
 
     const onChange = (sorter) => {
-        console.log("parameters: ", sorter)
+        console.log("parameters", sorter)
     }
 
     return (
