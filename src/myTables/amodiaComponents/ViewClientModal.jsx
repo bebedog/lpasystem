@@ -1,3 +1,15 @@
+/*
+================================================================================
+FILE        : ViewClientModal.jsx
+AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
+DESCRIPTION : JSX file that views the clinic details selected by the user.
+COPYRIGHT   : 16 Aug 2023
+REVISION HISTORY
+Date: 			By: 		Description:
+16 Aug 2023     Amodia      Creation of file
+================================================================================
+*/
+
 import React, { useState } from 'react'
 import { Modal, Space } from 'antd'
 

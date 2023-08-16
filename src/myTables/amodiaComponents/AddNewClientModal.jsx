@@ -1,3 +1,15 @@
+/*
+================================================================================
+FILE        : AddNewClientModal.jsx
+AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
+DESCRIPTION : JSX file that adds a new client to the database.
+COPYRIGHT   : 16 Aug 2023
+REVISION HISTORY
+Date: 			By: 		Description:
+16 Aug 2023     Amodia      Creation of file
+================================================================================
+*/
+
 import { Form, Input } from 'antd'
 import Modal from 'antd/es/modal/Modal'
 import React from 'react'
