@@ -7,7 +7,7 @@ COPYRIGHT   : 31 July 2023
 REVISION HISTORY
 Date: 			By: 		Description:
 31 July 2023    Amodia      Creation of file
-04 Aug 2023     Sigaya      Revised layout, used Ant Design library
+04 Aug 2023     Sigaya      Revised layouts, used Ant Design library
 ================================================================================
 */
 import React, {useState, useRef} from 'react';

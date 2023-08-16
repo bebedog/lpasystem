@@ -1,28 +1,27 @@
-/*
-================================================================================
-FILE        : client.jsx
-AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
-DESCRIPTION : jsx component that displays the client table
-COPYRIGHT   : 31 July 2023
-REVISION HISTORY
-Date: 			By: 		Description:
-31 July 2023    Amodia      Creation of file
-04 Aug 2023     Sigaya      Revised layout, used Ant Design library
-15 Aug 2023     Sigaya      Modified client table's filter and sort function
-================================================================================
-*/
+/**
+ * ================================================================================
+ * FILE        : client.jsx
+ * AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
+ * DESCRIPTION : jsx component that displays the client table
+ * COPYRIGHT   : 31 July 2023
+ * REVISION HISTORY
+ * Date:            By:        Description:
+ * 31 July 2023    Amodia      Creation of file
+ * 04 Aug 2023     Sigaya      Revised layout, used Ant Design library
+ * 15 Aug 2023     Sigaya      Modified client table's filter and sort function
+ * ================================================================================
+ */
 
-import React, { useState, useRef, useEffect } from 'react'
-import { Button, Input, Space, Table, Row, Popconfirm, message, Col } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import React, {useState, useRef, useEffect} from 'react'
+import {Button, Input, Space, Table, Row, Popconfirm, message, Col} from 'antd';
+import {SearchOutlined} from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import mockaroo from "../myHelpers/mycompanydatabase";
-import { clear } from "@testing-library/user-event/dist/clear";
+import {clear} from "@testing-library/user-event/dist/clear";
 import ViewClientModal from './amodiaComponents/ViewClientModal'
 import EditClientModal from './amodiaComponents/EditClientModal'
 import AddNewClientModal from './amodiaComponents/AddNewClientModal';
-import { deleteEntry, fetchClients } from '../myHelpers/db';
-
+import {deleteEntry, fetchClients} from '../myHelpers/db';
 
 
 /*
@@ -33,14 +32,16 @@ import { deleteEntry, fetchClients } from '../myHelpers/db';
 *
 * */
 
-/*
-================================================================================
-FUNCTION    : ClientTable
-DESCRIPTION : Displays the client table.
-ARGUMENTS   : none
-RETURNS     : Table object
-================================================================================
-*/
+/**
+ * ================================================================================
+ * FUNCTION    : ClientTable
+ * DESCRIPTION : Displays the client table.
+ * ARGUMENTS   : none
+ * RETURNS     : Table object
+ * Date:            By:        Description:
+ * 02 Aug 2023      Amodia     Creation of class
+ * ================================================================================
+ */
 function ClientTable() {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -58,8 +59,18 @@ function ClientTable() {
 
     const searchInput = useRef(null);
 
-
-    // functions for Message boxes
+    /**
+     * ================================================================================
+     * CLASS       : msgbox
+     * DESCRIPTION : Shows the message box popup message.
+     * ARGUMENTS   : type    - indicator if success, warning, or danger
+     *               content - response
+     * RETURNS     : void
+     * REVISION HISTORY
+     * Date:            By:        Description:
+     * 15 Aug 2023      Amodia     Creation of class
+     * ================================================================================
+     */
     const msgbox = (type, content) => {
         messageApi.open({
             type: type,
@@ -67,7 +78,7 @@ function ClientTable() {
         })
     }
 
-    // Whenever something changes(a CRUD update or something),
+    // Whenever something changes (a CRUD update or something),
     // The webapp needs to re-render the content of the table.
     // We can do that with the help of the useEffect webhook.
     useEffect(() => {
@@ -82,8 +93,17 @@ function ClientTable() {
         setCreateNewVisible(true)
     }
 
-
-    // This method handles the event when either VIEW or EDIT is clicked.
+    /**
+     * ================================================================================
+     * CLASS       : handleActionClick
+     * DESCRIPTION : This method handles the event when either the VIEW or EDIT options are clicked.
+     * ARGUMENTS   : event - user-generated action
+     * RETURNS     : void
+     * REVISION HISTORY
+     * Date:            By:        Description:
+     * 15 Aug 2023      Amodia     Creation of class
+     * ================================================================================
+     */
     const handleActionClick = (event) => {
         // Take the data content of the column.
         const mySelectedClient = event.target.getAttribute('data')
@@ -103,21 +123,53 @@ function ClientTable() {
 
     }
 
-    // this method handles the event when "Cancel" buttons are pressed on the VIEW modal.
+    /**
+     * ================================================================================
+     * CLASS       : handleViewCancel
+     * DESCRIPTION : This method handles the event when "Cancel" buttons are pressed on the VIEW modal.
+     * ARGUMENTS   : none
+     * RETURNS     : void
+     * REVISION HISTORY
+     * Date:            By:        Description:
+     * 15 Aug 2023      Amodia     Creation of class
+     * ================================================================================
+     */
     const handleViewCancel = () => {
         setViewVisible(false)
     }
 
-    // This method handles the event when "Cancel" buttons are pressed on the EDIT modal.
+    /**
+     * ================================================================================
+     * CLASS       : handleEditCancel
+     * DESCRIPTION : This method handles the event when the "Edit" button is pressed on the VIEW modal.
+     * ARGUMENTS   : none
+     * RETURNS     : void
+     * REVISION HISTORY
+     * Date:            By:        Description:
+     * 15 Aug 2023      Amodia     Creation of class
+     * ================================================================================
+     */
     const handleEditCancel = () => {
         setEditVisible(false)
     }
 
 
     // This method handles the event where confirm was clicked on the popconfirm for deletion.
+    /**
+     * ================================================================================
+     * CLASS       : handleDelete
+     * DESCRIPTION : This method handles the event where the Confirm button was clicked
+     *               on the popconfirm component for deletion.
+     * ARGUMENTS   : none
+     * RETURNS     : Promise - asynchronous, object
+     * REVISION HISTORY
+     * Date:            By:        Description:
+     * 15 Aug 2023      Amodia     Creation of class
+     * ================================================================================
+     */
     const handleDelete = () => {
         const myClient = JSON.parse(selectedClient)
-        console.log('deleting...')
+        console.log('Deleting the client...')
         return new Promise((resolve, reject) => {
             deleteEntry(myClient.clinic_id)
                 .then(response => {
@@ -142,7 +194,7 @@ function ClientTable() {
         setSearchText('');
     };
     const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
+        filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters, close}) => (
             <div
                 style={{
                     padding: 8,
@@ -164,7 +216,7 @@ function ClientTable() {
                     <Button
                         type="primary"
                         onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
+                        icon={<SearchOutlined/>}
                         size="small"
                         style={{
                             width: 90,
@@ -294,14 +346,29 @@ function ClientTable() {
                 return (
                     <Row justify={'end'}>
                         <Space>
-                            <a handler={"view"} onClick={handleActionClick} data={JSON.stringify(records)} onCancel={handleViewCancel} >View</a>
-                            <a handler={"edit"} onClick={handleActionClick} data={JSON.stringify(records)} onCancel={handleEditCancel}>Edit</a>
+                            <a handler={"view"}
+                               style={{color: "blue"}}
+                               onClick={handleActionClick}
+                               data={JSON.stringify(records)}
+                               onCancel={handleViewCancel}
+                            >View</a>
+
+                            <a handler={"edit"}
+                               onClick={handleActionClick}
+                               data={JSON.stringify(records)}
+                               onCancel={handleEditCancel}
+
+                            >Edit</a>
+
                             <Popconfirm
-                                title='Delete from database'
-                                description='This is a permanent action. And this data will be lost forever!'
+                                title='Delete From The Database'
+                                description='This is a permanent action, and the data associated with this clinic will be lost forever. Proceed?'
                                 onConfirm={handleDelete}
                             >
-                                <a handler={"delete"} onClick={handleActionClick} data={JSON.stringify(records)}>Delete</a>
+                                <a handler={"delete"}
+                                   style={{color: "red"}}
+                                   onClick={handleActionClick}
+                                   data={JSON.stringify(records)}>Delete</a>
                             </Popconfirm>
                         </Space>
                     </Row>
@@ -318,7 +385,7 @@ function ClientTable() {
         <>
             {contextHolder}
             <Row
-                style={{ width: '100%', background: '#F5F5F5', paddingBottom: 15, paddingRight: 15 }}
+                style={{width: '100%', background: '#F5F5F5', paddingBottom: 15, paddingRight: 15}}
                 justify={'end'}>
                 <Button type='primary' onClick={handleCreateNewClicked}>Add New Client</Button>
             </Row>
@@ -327,10 +394,10 @@ function ClientTable() {
                 // dataSource={mockaroo}
                 dataSource={myClients}
                 //set pagination option to bottom center
-                pagination={{ position: ["bottomCenter"] }}
+                pagination={{position: ["bottomCenter"]}}
                 size="large"
                 bordered
-                scroll={{ x: 1300 }}
+                scroll={{x: 1300}}
                 onChange={onChange}
                 loading={isLoading}
 
@@ -348,10 +415,12 @@ function ClientTable() {
                         onCancel={handleEditCancel}
                     />
                 </> : null}
-                <AddNewClientModal
+            <AddNewClientModal
                 open={isCreateNewVisible}
                 onOk={null}
-                onCancel={() => {setCreateNewVisible(false)}} />
+                onCancel={() => {
+                    setCreateNewVisible(false)
+                }}/>
         </>
     )
 }
