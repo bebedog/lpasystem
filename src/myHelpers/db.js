@@ -33,7 +33,7 @@ const fetchClients = () => {
 /**
  * 
  * @param {Integer} id id number of the entry to be deleted.
- * @returns returns a message <String> that let's the user know about the result.
+ * @returns returns a message <String> that lets the user know about the result.
  */
 const deleteEntryAsync = (id) => {
     var myHeaders = new Headers();
