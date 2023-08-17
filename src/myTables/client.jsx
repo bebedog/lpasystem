@@ -38,37 +38,43 @@ import {deleteEntry, fetchClients} from '../myHelpers/db';
  * DESCRIPTION : Displays the client table.
  * ARGUMENTS   : none
  * RETURNS     : Table object
+ * REVISION HISTORY
  * Date:            By:        Description:
- * 02 Aug 2023      Amodia     Creation of class
+ * 02 Aug 2023      Amodia     Creation of function
  * ================================================================================
  */
 function ClientTable() {
+    //this state stores and modifies the searched text.
     const [searchText, setSearchText] = useState('');
+    //this state renders a new column based on the search query.
     const [searchedColumn, setSearchedColumn] = useState('');
+    //this state holds the records of the selected client.
     const [selectedClient, setSelectedClient] = useState(null)
+    //this state is used for the viewClient modal.
     const [isViewVisible, setViewVisible] = useState(false)
+    //this state is used for the editClient modal.
     const [isEditVisible, setEditVisible] = useState(false)
+    //this state is used for the createNewClient modal.
     const [isCreateNewVisible, setCreateNewVisible] = useState(false)
-    const [messageApi, contextHolder] = message.useMessage()
-
     // this state contains all the data of the query.
     const [myClients, setMyClients] = useState([])
-
-    // this state is to display a loading spinner to the table whenever an update happens
+    // this state is to display a loading spinner to the table whenever an update happens.
     const [isLoading, setLoading] = useState(true)
-
+    // this useRef is for the search inputs.
     const searchInput = useRef(null);
+    //this message component displays the message box for the PopConfirm component.
+    const [messageApi, contextHolder] = message.useMessage()
 
     /**
      * ================================================================================
-     * CLASS       : msgbox
+     * FUNCTION    : msgbox
      * DESCRIPTION : Shows the message box popup message.
      * ARGUMENTS   : type    - indicator if success, warning, or danger
      *               content - response
      * RETURNS     : void
      * REVISION HISTORY
      * Date:            By:        Description:
-     * 15 Aug 2023      Amodia     Creation of class
+     * 15 Aug 2023      Amodia     Creation of function
      * ================================================================================
      */
     const msgbox = (type, content) => {
@@ -95,13 +101,13 @@ function ClientTable() {
 
     /**
      * ================================================================================
-     * CLASS       : handleActionClick
+     * FUNCTION    : handleActionClick
      * DESCRIPTION : This method handles the event when either the VIEW or EDIT options are clicked.
      * ARGUMENTS   : event - user-generated action
      * RETURNS     : void
      * REVISION HISTORY
      * Date:            By:        Description:
-     * 15 Aug 2023      Amodia     Creation of class
+     * 15 Aug 2023      Amodia     Creation of function
      * ================================================================================
      */
     const handleActionClick = (event) => {
@@ -120,18 +126,17 @@ function ClientTable() {
                 setEditVisible(true)
                 break;
         }
-
     }
 
     /**
      * ================================================================================
-     * CLASS       : handleViewCancel
+     * FUNCTION    : handleViewCancel
      * DESCRIPTION : This method handles the event when "Cancel" buttons are pressed on the VIEW modal.
      * ARGUMENTS   : none
      * RETURNS     : void
      * REVISION HISTORY
      * Date:            By:        Description:
-     * 15 Aug 2023      Amodia     Creation of class
+     * 15 Aug 2023      Amodia     Creation of function
      * ================================================================================
      */
     const handleViewCancel = () => {
@@ -140,31 +145,29 @@ function ClientTable() {
 
     /**
      * ================================================================================
-     * CLASS       : handleEditCancel
+     * FUNCTION    : handleEditCancel
      * DESCRIPTION : This method handles the event when the "Edit" button is pressed on the VIEW modal.
      * ARGUMENTS   : none
      * RETURNS     : void
      * REVISION HISTORY
      * Date:            By:        Description:
-     * 15 Aug 2023      Amodia     Creation of class
+     * 15 Aug 2023      Amodia     Creation of function
      * ================================================================================
      */
     const handleEditCancel = () => {
         setEditVisible(false)
     }
 
-
-    // This method handles the event where confirm was clicked on the popconfirm for deletion.
     /**
      * ================================================================================
-     * CLASS       : handleDelete
+     * FUNCTION    : handleDelete
      * DESCRIPTION : This method handles the event where the Confirm button was clicked
-     *               on the popconfirm component for deletion.
+     *               on the PopConfirm component for deletion.
      * ARGUMENTS   : none
      * RETURNS     : Promise - asynchronous, object
      * REVISION HISTORY
      * Date:            By:        Description:
-     * 15 Aug 2023      Amodia     Creation of class
+     * 15 Aug 2023      Amodia     Creation of function
      * ================================================================================
      */
     const handleDelete = () => {
@@ -357,11 +360,10 @@ function ClientTable() {
                                onClick={handleActionClick}
                                data={JSON.stringify(records)}
                                onCancel={handleEditCancel}
-
                             >Edit</a>
 
                             <Popconfirm
-                                title='Delete From The Database'
+                                title='Delete Clinic Data'
                                 description='This is a permanent action, and the data associated with this clinic will be lost forever. Proceed?'
                                 onConfirm={handleDelete}
                             >

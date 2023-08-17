@@ -1,15 +1,15 @@
-/*
-================================================================================
-FILE        : App.js
-AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
-DESCRIPTION : JS file that is used by the root id to launch the website.
-COPYRIGHT   : 31 July 2023
-REVISION HISTORY
-Date: 			By: 		Description:
-31 July 2023    Amodia      Creation of file
-04 Aug 2023     Sigaya      Revised layouts, used Ant Design library
-================================================================================
-*/
+/**
+ * ================================================================================
+ * FILE        : App.js
+ * AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
+ * DESCRIPTION : JS file that is used by the root id to launch the website.
+ * COPYRIGHT   : 31 July 2023
+ * REVISION HISTORY
+ * Date:            By:        Description:
+ * 31 July 2023    Amodia      Creation of file
+ * 04 Aug 2023     Sigaya      Revised layouts, used Ant Design library
+ * ================================================================================
+ */
 import React, {useState, useRef} from 'react';
 import ClientTable, {clientColumns} from './myTables/client'
 import lpaTable from './myTables/lpa'
@@ -64,8 +64,22 @@ const items = [
 //Instantiate the Date() class to retrieve the current year for the footer
 const currentYear = new Date().getFullYear();
 
+/**
+ * ================================================================================
+ * FUNCTION    : App
+ * DESCRIPTION : Function that the root will execute upon loading.
+ * ARGUMENTS   : None
+ * RETURNS     : Layout - component
+ * REVISION HISTORY
+ * Date:            By:        Description:
+ * 31 July 2023     Amodia     Creation of file
+ * ================================================================================
+ */
 function App() {
     //How to change content based on Antd menu item: https://stackoverflow.com/questions/52021381/how-to-change-content-based-on-menu-item-click-in-antd-react-ui-library
+    //Note: do not put render conditions on conditional statements, as you will encounter rendering errors.
+    //Renders should all be loaded at once, and then that's the time you display them accordingly.
+    //edit this
     const componentSwitch = (key) => {
         switch (key) {
             case "lpa":
@@ -97,6 +111,7 @@ function App() {
     docs: https://react.dev/learn/state-a-components-memory
 
      */
+    //CHANGE INITIAL STATE OF LOCALHOST HERE
     const [mode, setMode] = useState('client');
 
     //anonymous variable
