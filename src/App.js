@@ -16,18 +16,25 @@ import lpaTable from './myTables/lpa'
 import forbidden from './myTables/forbidden'
 import adminView from "./myTables/admin";
 //import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
-import {Menu, Layout, theme, Button, Input, Space, Table} from 'antd';
+import {Menu, Layout, theme, Button, Input, Space, Table, Switch} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import mockaroo from "./myHelpers/mycompanydatabase.js";
 // database helpers
 import db from './myHelpers/db'
+import {createBrowserRouter, RouterProvider, Link} from "react-router-dom";
 
 /*
 * For the Layout and Menu documentation, go to:
 * Layout: https://ant.design/components/layout
 * Menu: https://ant.design/components/layout
 * */
+
+const router = createBrowserRouter([
+    {path: '/client', element: <ClientTable/>},
+    {path: '/lpas', element: <lpaTable/>}
+])
+
 
 //Instantiate the Header, Content, and Footer to the Layout wrapper
 const {
@@ -47,16 +54,19 @@ const items = [
     {
         label: 'Client View',
         key: 'client',
+        path: '/client'
         //disabled: false
     },
     {
         label: 'LPA View',
         key: 'lpa',
+        path: '/lpa',
         disabled: true
     },
     {
         label: 'Forbidden',
         key: 'forbid',
+        path: 'forbidden',
         disabled: true
     }
 ]
@@ -178,6 +188,8 @@ function App() {
                     Lasermet Philippines © {currentYear}. Created by Lasermet Philippines.
                 </Footer>
             </Layout>
+
+            {/*<RouterProvider router={router}/>;*/}
         </>
 );
 }

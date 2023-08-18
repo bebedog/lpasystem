@@ -320,9 +320,10 @@ function ClientTable() {
             title: "Email Address",
             // dataIndex: "email_address",
             dataIndex: "email",
-            key: "email_address",
+            key: "email",
             width: 350,
-            ...getColumnSearchProps("email_address")
+            //Note: this will throw an error if the content is empty/null
+            ...getColumnSearchProps("email")
         },
         {
             title: "Address",
