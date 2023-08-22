@@ -69,7 +69,7 @@ function adminView() {
                     </Button>
 
                     <Button onClick={() => {
-                        fetch('https://lpa-server.onrender.com/', {method: 'post'}).then((res) => {console.log(res)})
+                        fetch('https://lpa-server.onrender.com/testing', {method: 'post'}).then((res) => {console.log(res)})
                     }}>
                         cors test
                     </Button>
