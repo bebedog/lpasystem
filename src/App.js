@@ -8,21 +8,17 @@
  * Date:            By:        Description:
  * 31 July 2023    Amodia      Creation of file
  * 04 Aug 2023     Sigaya      Revised layouts, used Ant Design library
+ * 22 Aug 2023     Sigaya      Changed rendering flow from returning Layout to RouterProvider
  * ================================================================================
  */
-import React, {useState, useRef} from 'react';
-import ClientTable, {clientColumns} from './myTables/client'
-import lpaTable from './myTables/lpa'
-import forbidden from './myTables/forbidden'
-import adminView from "./myTables/admin";
-//import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
-import {Menu, Layout, theme, Button, Input, Space, Table, Switch} from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import Highlighter from 'react-highlight-words';
-import mockaroo from "./myHelpers/mycompanydatabase.js";
-// database helpers
-import db from './myHelpers/db'
-import {createBrowserRouter, RouterProvider, Link} from "react-router-dom";
+import React from 'react';
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import ClientTable from './myTables/client'
+import LPATable from './myTables/lpa'
+import RootLayout from "./RootLayout";
+import AdminView from "./myTables/admin";
+import Forbidden from "./myTables/forbidden";
+import LoginForm from "./components/Login";
 
 /*
 * For the Layout and Menu documentation, go to:
@@ -30,166 +26,49 @@ import {createBrowserRouter, RouterProvider, Link} from "react-router-dom";
 * Menu: https://ant.design/components/layout
 * */
 
+/**
+ * ================================================================================
+ * FUNCTION    : Router
+ * DESCRIPTION : Router function that is used to render the web application with routing.
+ * ARGUMENTS   : None
+ * RETURNS     : CreateBrowserRouter - creates routes
+ * REVISION HISTORY
+ * Date:            By:        Description:
+ * 22 Aug 2023      Sigaya     Creation of function
+ * ================================================================================
+ */
 const router = createBrowserRouter([
-    {path: '/client', element: <ClientTable/>},
-    {path: '/lpas', element: <lpaTable/>}
-])
-
-
-//Instantiate the Header, Content, and Footer to the Layout wrapper
-const {
-    Header,
-    Content,
-    Footer
-} = Layout;
-
-//Declare the items that the user will click in the navigation bar
-//REVISE THIS ONE
-const items = [
     {
-        label: "Administrator View",
-        key: 'admin',
-        disabled: true
-    },
-    {
-        label: 'Client View',
-        key: 'client',
-        path: '/client'
-        //disabled: false
-    },
-    {
-        label: 'LPA View',
-        key: 'lpa',
-        path: '/lpa',
-        disabled: true
-    },
-    {
-        label: 'Forbidden',
-        key: 'forbid',
-        path: 'forbidden',
-        disabled: true
+        path: '/',
+        element: <RootLayout/>,
+        children:[
+            {path: '/client', element: <ClientTable/>},
+            {path: '/lpa', element: <LPATable/>},
+            {path: '/admin', element: <AdminView/>},
+            {path: '/forbidden', element: <Forbidden/>},
+            //!!!! FOR TESTING PURPOSES ONLY. REMOVE IN MAIN NAVIGATION BAR BEFORE DEPLOYMENT !!!!
+            {path: '/login', element: <LoginForm/>}
+        ]
     }
-]
-
-//Instantiate the Date() class to retrieve the current year for the footer
-const currentYear = new Date().getFullYear();
+])
 
 /**
  * ================================================================================
  * FUNCTION    : App
  * DESCRIPTION : Function that the root will execute upon loading.
  * ARGUMENTS   : None
- * RETURNS     : Layout - component
+ * RETURNS     : RouterProvider - renders the webpage with routers
  * REVISION HISTORY
  * Date:            By:        Description:
  * 31 July 2023     Amodia     Creation of file
+ * 22 Aug 2023      Sigaya     Changed return variable from Layout to RouterProvider
  * ================================================================================
  */
 function App() {
-    //How to change content based on Antd menu item: https://stackoverflow.com/questions/52021381/how-to-change-content-based-on-menu-item-click-in-antd-react-ui-library
-    //Note: do not put render conditions on conditional statements, as you will encounter rendering errors.
-    //Renders should all be loaded at once, and then that's the time you display them accordingly.
-    //edit this
-    const componentSwitch = (key) => {
-        switch (key) {
-            case "lpa":
-                console.log('Clicked ', key);
-                return lpaTable()
-                break;
-            case 'client':
-                console.log('Clicked ', key);
-                return ClientTable();
-                break;
-            case 'admin':
-                console.log('Clicked ', key);
-                return adminView();
-                break;
-            default:
-                console.log('Clicked ', key);
-                return forbidden();
-                break;
-        }
-        console.log('Finished Switch Case');
-    }
-
-    /*
-
-    useState is where you want this component to remember something.
-    useState stores exactly two items from the array.
-    React hooks can only be invoked at the top level.
-    naming convention: [something, setSomething]
-    docs: https://react.dev/learn/state-a-components-memory
-
-     */
-    //CHANGE INITIAL STATE OF LOCALHOST HERE
-    const [mode, setMode] = useState('client');
-
-    //anonymous variable
-    const {
-        token: {colorBgContainer}
-    } = theme.useToken();
-
     //App function return
     return (
         <>
-            {/*Start with the "canvas". Set the Layout
-             vh = viewport height, occupies to the percentage of visible screen height.
-             Antd footer style doesn't stay at the bottom solution: https://stackoverflow.com/questions/73234128/antd-footer-style-doesnt-stay-at-the-bottom
-            */}
-            <Layout className="layout" style={{
-                minHeight: "100vh"
-            }}>
-                {/*Set the Header style and Menu
-                The 'sticky' attribute sticks the header to the top of the page
-                */}
-                <Header style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    position: 'sticky'
-                }}>
-
-                    {/*Change the logo here!*/}
-                    {/*<div className={"lasermet-logo"}/>*/}
-                    {/*<img src = "https://www.lasermet.com/wp-content/uploads/2023/02/cropped-Lasermet-Logo-800x800-1.jpeg"*/}
-                    {/*     alt = "Lasermet Logo"*/}
-                    {/*height = "100px"*/}
-                    {/*width = "100px"*/}
-                    {/*!/>*/}
-                    {/*Navigation bar
-                    Recommendation: try utilizing react routing (react-router-dom)?
-                    */}
-                    <Menu
-                        theme="dark"
-                        mode="horizontal"
-                        onClick={(e) => setMode(e.key)}
-                        selectedKeys={mode}
-                        items={items}
-                    />;
-                </Header>
-
-                {/*Set the content style. This is where you will display the page contents*/}
-                <Content style={{
-                    margin: '16px 0'
-                }}>
-
-                    <div className="site-layout-content" style={{
-                        background: colorBgContainer
-                    }}>
-                        {/*This is where the components will be shown after selecting the option on the navbar*/}
-                        <div>{componentSwitch(mode)}</div>
-                    </div>
-                </Content>
-                {/*Set the Footer. This is where the copyright will be displayed
-                The 'sticky' attribute sticks the footer to the bottom of the webpage */}
-                <Footer style={{
-                    textAlign: 'center',
-                    //position: 'sticky'
-                }}>
-                    Lasermet Philippines © {currentYear}. Created by Lasermet Philippines.
-                </Footer>
-            </Layout>
-
-            {/*<RouterProvider router={router}/>;*/}
+            <RouterProvider router={router}/>
         </>
 );
 }

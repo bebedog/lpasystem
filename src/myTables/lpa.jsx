@@ -33,6 +33,18 @@ import {Table} from 'antd'
     )
 }*/
 
+
+/**
+ * ================================================================================
+ * FUNCTION    : LPAColumns
+ * DESCRIPTION : Creates the columns for the LPA table.
+ * ARGUMENTS   : None
+ * RETURNS     : Array - contains the columns for the table
+ * REVISION HISTORY
+ * Date:            By:        Description:
+ * 04 Aug 2023      Sigaya     Creation of function
+ * ================================================================================
+ */
 const LPAColumns = [
     {
         title: "First Name",
@@ -56,30 +68,33 @@ const LPAColumns = [
     }
 ]
 
-function lpaTable() {
+/**
+ * ================================================================================
+ * FUNCTION    : LPATable
+ * DESCRIPTION : Renders the LPA table.
+ * ARGUMENTS   : None
+ * RETURNS     : Table
+ * REVISION HISTORY
+ * Date:            By:        Description:
+ * 31 July 2023     Amodia     Creation of file
+ * 04 Aug 2023      Sigaya     Revised to Ant Design Library functions
+ * ================================================================================
+ */
+function LPATable() {
     return (
         <>
-            {/*<Container className='mt-3' style={{ width: "70%" }}>
-                <h3 className='text-center'>LPA View</h3>
-                <Row>
-                    <Col>
-                        <p>id</p>
-                    </Col>
-
-                    <Col>
-                        <p>LPA Name</p>
-                    </Col>
-
-                    <Col>
-                        <p> E-mail Address</p>
-                    </Col>
-                </Row>
-                {lpas.map(obj => createDataRow(obj))}
-            </Container>*/}
-            <Table columns = {LPAColumns} dataSource={lpas}/>
+            <Table
+                columns = {LPAColumns}
+                dataSource={lpas}
+                //set pagination option to bottom center
+                pagination={{position: ["bottomCenter"]}}
+                size="large"
+                bordered
+                scroll={{x: 1300}}
+            />
         </>
     )
 }
 
-export default lpaTable;
+export default LPATable;
 export {LPAColumns};

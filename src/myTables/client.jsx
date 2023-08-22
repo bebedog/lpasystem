@@ -16,7 +16,6 @@ import React, {useState, useRef, useEffect} from 'react'
 import {Button, Input, Space, Table, Row, Popconfirm, message, Col} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
-import mockaroo from "../myHelpers/mycompanydatabase";
 import {clear} from "@testing-library/user-event/dist/clear";
 import ViewClientModal from './amodiaComponents/ViewClientModal'
 import EditClientModal from './amodiaComponents/EditClientModal'
@@ -67,7 +66,7 @@ function ClientTable() {
 
     /**
      * ================================================================================
-     * FUNCTION    : msgbox
+     * FUNCTION    : MsgBox
      * DESCRIPTION : Shows the message box popup message.
      * ARGUMENTS   : type    - indicator if success, warning, or danger
      *               content - response
@@ -77,7 +76,7 @@ function ClientTable() {
      * 15 Aug 2023      Amodia     Creation of function
      * ================================================================================
      */
-    const msgbox = (type, content) => {
+    const MsgBox = (type, content) => {
         messageApi.open({
             type: type,
             content: content
@@ -180,22 +179,57 @@ function ClientTable() {
                     fetchClients()
                         .then(res => {
                             setMyClients(res)
-                            resolve(msgbox('Success!', response))
+                            resolve(MsgBox('Success!', response))
                         })
                 })
                 .catch(error => reject(error))
         })
     }
 
+    /**
+     * ================================================================================
+     * FUNCTION    : handleSearch
+     * DESCRIPTION : This method sets the searched input from the user to the searched column.
+     * ARGUMENTS   : None
+     * RETURNS     : None
+     * REVISION HISTORY
+     * Date:            By:        Description:
+     * 15 Aug 2023      Sigaya     Creation of function
+     * ================================================================================
+     */
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
         setSearchText(selectedKeys[0]);
         setSearchedColumn(dataIndex);
     };
+
+    /**
+     * ================================================================================
+     * FUNCTION    : handleReset
+     * DESCRIPTION : This method sets the searched column to its default setting.
+     * ARGUMENTS   : None
+     * RETURNS     : None
+     * REVISION HISTORY
+     * Date:            By:        Description:
+     * 15 Aug 2023      Sigaya     Creation of function
+     * ================================================================================
+     */
     const handleReset = (clearFilters) => {
         clearFilters();
         setSearchText('');
     };
+
+    /**
+     * ================================================================================
+     * FUNCTION    : getColumnSearchProps
+     * DESCRIPTION : This method gets the searched text inputted by the user.
+     * ARGUMENTS   : None
+     * RETURNS     : None
+     * REVISION HISTORY
+     * Date:            By:        Description:
+     * 15 Aug 2023      Sigaya     Creation of function
+     * ================================================================================
+     */
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters, close}) => (
             <div
