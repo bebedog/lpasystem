@@ -83,4 +83,26 @@ const deleteEntry = (id) => {
     )
 }
 
-export { fetchClients, deleteEntryAsync, deleteEntry }
+const createNewClient = (payload) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify(payload)
+
+    var requestOptions = {
+        method: 'post',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    }
+
+    return(
+        new Promise((resolve, reject) => {
+            fetch('/add', requestOptions)
+            .then(() => resolve(null))
+            .catch((error => reject(error)))
+        })
+    )
+}
+
+export { fetchClients, deleteEntryAsync, deleteEntry, createNewClient }

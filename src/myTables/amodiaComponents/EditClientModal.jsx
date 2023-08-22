@@ -11,13 +11,18 @@ Date: 			By: 		Description:
 ================================================================================
 */
 
-import React, {useState} from 'react'
-import {Button, Form, Input, Radio, Modal, DatePicker} from 'antd'
+import React, { useState } from 'react'
+import { Button, Form, Input, Radio, Modal, DatePicker } from 'antd'
+import dayjs from 'dayjs'
 
 const EditClientModal = (props) => {
+    // parse the "selectedClient" propert passed to this child component..
+    let selectedClient = JSON.parse(props.selectedClient)
+    console.log(dayjs(selectedClient.contract_start).format("YYYY-MM-DD"))
+
     const [form] = Form.useForm();
     const [formLayout, setFormLayout] = useState('vertical');
-    const onFormLayoutChange = ({layout}) => {
+    const onFormLayoutChange = ({ layout }) => {
         setFormLayout(layout);
     };
 
@@ -83,7 +88,15 @@ const EditClientModal = (props) => {
             initialValues={{
                 requiredMarkValue: requiredMark,
             }}
-
+            footer={[
+                <>
+                    <Button onClick={() => {
+                        alert("hello world")
+                    }} type='primary'>Save</Button>
+                    
+                    <Button onClick={props.onCancel}>Return</Button>
+                </>
+            ]}
         >
 
             <Form
@@ -105,34 +118,34 @@ const EditClientModal = (props) => {
                     label="Clinic Name"
                     required tooltip="The selected clinic's name."
                 >
-                    <Input placeholder="Enter Clinic Name"/>
+                    <Input defaultValue={selectedClient.clinic_name} placeholder="Enter Clinic Name" />
                 </Form.Item>
                 <Form.Item
                     label="Email Address"
                     required tooltip="The selected clinic's email address."
                 >
-                    <Input placeholder="Enter Email Address"/>
+                    <Input defaultValue={selectedClient.email} placeholder="Enter Email Address" />
                 </Form.Item>
                 <Form.Item
                     label="Address"
                     required tooltip="The selected clinic's present address."
                 >
-                    <Input placeholder="Enter Address"/>
+                    <Input defaultValue={selectedClient.address} placeholder="Enter Address" />
                 </Form.Item>
 
                 <Form.Item label="Start of Contract"
-                            required tooltip="The selected clinic's start date of contract.">
-                    <DatePicker style ={{width:200}}/>
+                    required tooltip="The selected clinic's start date of contract.">
+                    <DatePicker defaultValue={dayjs(selectedClient.contract_start, "YYYY-MM-DD")} style={{ width: 200 }} />
                 </Form.Item>
 
                 <Form.Item label="Audit Date"
-                           required tooltip="The selected clinic's auditing date.">
-                    <DatePicker style ={{width:200}}/>
+                    required tooltip="The selected clinic's auditing date.">
+                    <DatePicker defaultValue={dayjs(selectedClient.audit_date, "YYYY-MM-DD")} style={{ width: 200 }} />
                 </Form.Item>
 
-                <Form.Item {...buttonItemLayout}>
+                {/* <Form.Item {...buttonItemLayout}>
                     <Button type="primary">Submit</Button>
-                </Form.Item>
+                </Form.Item> */}
             </Form>
 
         </Modal>
