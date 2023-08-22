@@ -67,6 +67,12 @@ function adminView() {
                     <Button onClick={test}>
                     red dead
                     </Button>
+
+                    <Button onClick={() => {
+                        fetch('https://lpa-server.onrender.com/', {method: 'post'}).then((res) => {console.log(res)})
+                    }}>
+                        cors test
+                    </Button>
         </Container>
 
 
