@@ -19,6 +19,7 @@ import RootLayout from "./RootLayout";
 import AdminView from "./myTables/admin";
 import Forbidden from "./myTables/forbidden";
 import LoginForm from "./components/Login";
+import ErrorPage from "./components/ErrorPage";
 
 /*
 * For the Layout and Menu documentation, go to:
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <RootLayout/>,
+        errorElement: <ErrorPage/>,
         children:[
             {path: '/client', element: <ClientTable/>},
             {path: '/lpa', element: <LPATable/>},

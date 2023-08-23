@@ -13,7 +13,7 @@
  */
 
 import React, {useState, useRef, useEffect} from 'react'
-import {Button, Input, Space, Table, Row, Popconfirm, message, Col} from 'antd';
+import {Button, Input, Space, Table, Row, Popconfirm, message} from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import {clear} from "@testing-library/user-event/dist/clear";

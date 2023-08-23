@@ -21,7 +21,7 @@ const items = [
         key: 'admin'
     },
     {
-        label: <Link to="/client" style={{textDecoration: 'none'}}>Client View</Link>,
+        label: <Link to="/client" style={{textDecoration: 'none'}} >Client View</Link>,
         key: 'client'
     },
     {
