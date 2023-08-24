@@ -1,7 +1,7 @@
 /**
  * ================================================================================
  * FILE        : MainNavigation.jsx
- * AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
+ * AUTHORS     : Jayson O. Amodia, Kathryn Marie P. Sigaya
  * DESCRIPTION : JSX file that displays the Main Navigation bar.
  * COPYRIGHT   : 22 Aug 2023
  * REVISION HISTORY

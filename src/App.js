@@ -18,8 +18,9 @@ import LPATable from './myTables/lpa'
 import RootLayout from "./RootLayout";
 import AdminView from "./myTables/admin";
 import Forbidden from "./myTables/forbidden";
-import LoginForm from "./components/Login";
+import LoginForm, {action as authAction} from "./components/LoginUser";
 import ErrorPage from "./components/ErrorPage";
+import RegistrationForm from "./components/RegisterUser";
 
 /*
 * For the Layout and Menu documentation, go to:
@@ -44,12 +45,15 @@ const router = createBrowserRouter([
         element: <RootLayout/>,
         errorElement: <ErrorPage/>,
         children:[
+            //default index page
+            {index:true, element: <ClientTable/>},
             {path: '/client', element: <ClientTable/>},
             {path: '/lpa', element: <LPATable/>},
             {path: '/admin', element: <AdminView/>},
             {path: '/forbidden', element: <Forbidden/>},
             //!!!! FOR TESTING PURPOSES ONLY. REMOVE IN MAIN NAVIGATION BAR BEFORE DEPLOYMENT !!!!
-            {path: '/login', element: <LoginForm/>}
+            {path: '/login', element: <LoginForm/>, action: authAction},
+            {path: '/register', element: <RegistrationForm/>}
         ]
     }
 ])
