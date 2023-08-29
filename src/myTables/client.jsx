@@ -32,15 +32,10 @@ import {deleteEntry, fetchClients} from '../myHelpers/db';
 * */
 
 /**
- * ================================================================================
- * FUNCTION    : ClientTable
- * DESCRIPTION : Displays the client table.
- * ARGUMENTS   : none
- * RETURNS     : Table object
- * REVISION HISTORY
- * Date:            By:        Description:
- * 02 Aug 2023      Amodia     Creation of function
- * ================================================================================
+ * Function     : ClientTable
+ * @remarks     : Displays the client table.
+ * @params      : none
+ * @returns     : Table object
  */
 function ClientTable() {
     //this state stores and modifies the searched text.

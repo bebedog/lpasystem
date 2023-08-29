@@ -27,9 +27,13 @@ import {json, Link, redirect} from "react-router-dom";
  * ================================================================================
  */
 function LoginForm() {
+
+    //is this where we put the sending of form content to the backend?
     const onFinish = (values) => {
         console.log('Received values of form: ', values);
     };
+
+
     return (
         <Form
             name="normal_login"
@@ -37,27 +41,30 @@ function LoginForm() {
             initialValues={{
                 remember: true,
             }}
-            onFinish={onFinish}
-            method="POST"
+            onFinish={onFinish} //antd's version of "onSubmit"
+            method="post"
             align="center"
         >
+            {/* Username Input Field */}
             <Form.Item
                 name="username"
                 rules={[
                     {
-                        required: true,
-                        message: 'Please input your Username!',
+                        required: true, //indicates that the field is required for input
+                        message: 'Please input your username!', //error message if the field is blank
                     },
                 ]}
             >
                 <Input prefix={<UserOutlined className="site-form-item-icon"/>} placeholder="Username"/>
             </Form.Item>
+
+            {/* Password Input Field */}
             <Form.Item
                 name="password"
                 rules={[
                     {
-                        required: true,
-                        message: 'Please input your Password!',
+                        required: true, //indicates that the field is required for input
+                        message: 'Please input your password!', //error message if the field is blank
                     },
                 ]}
             >
@@ -67,20 +74,27 @@ function LoginForm() {
                     placeholder="Password"
                 />
             </Form.Item>
+
+            {/* Remember Me Checkbox Field */}
             <Form.Item>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
                     <Checkbox>Remember me</Checkbox>
                 </Form.Item>
 
+                {/* Forgot Password Hyperlink */}
                 <a className="login-form-forgot" href="">
                     Forgot password
                 </a>
             </Form.Item>
 
+
             <Form.Item>
+                {/* Log In Button */}
                 <Button type="primary" htmlType="submit" className="login-form-button">
                     Log in
                 </Button>
+
+                {/* Register Link */}
                 Or <Link to="/register">register now!</Link>
             </Form.Item>
         </Form>
@@ -88,37 +102,3 @@ function LoginForm() {
 };
 export default LoginForm;
 
-//this looks like the expanded version of the form action attribute in html
-export async function action({request}) {
-    const searchParams = new URL(request.url).searchParams;
-    const mode = searchParams.get('mode') || 'login';
-    //gets hold of the data that was submitted with the form
-    const data = await request.formData();
-
-    if (mode !== 'login' && mode !== 'signup') {
-        throw json({message: "Unsupported Mode! Invalid User Input."}, {status: 422})
-    }
-
-    const authData = {
-        username: data.get('username'),
-        password: data.get('password')
-    }
-    // fetch("/clients" + ,mode);
-    const response = await fetch('/clients' + mode, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(authData)
-    });
-
-
-    if (response.status === 422 || response.status === 401) {
-        return response;
-    }
-    if (!response.ok) {
-        throw json({message: 'Could not authenticate user.'}, {status: 500})
-    }
-
-    return redirect('/');
-}

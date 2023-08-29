@@ -18,9 +18,10 @@ import LPATable from './myTables/lpa'
 import RootLayout from "./RootLayout";
 import AdminView from "./myTables/admin";
 import Forbidden from "./myTables/forbidden";
-import LoginForm, {action as authAction} from "./components/LoginUser";
+import LoginForm from "./components/LoginUser";
 import ErrorPage from "./components/ErrorPage";
 import RegistrationForm from "./components/RegisterUser";
+import EventLoginForm, {LoginEventAction} from "./events/EventLoginForm";
 
 /*
 * For the Layout and Menu documentation, go to:
@@ -52,7 +53,7 @@ const router = createBrowserRouter([
             {path: '/admin', element: <AdminView/>},
             {path: '/forbidden', element: <Forbidden/>},
             //!!!! FOR TESTING PURPOSES ONLY. REMOVE IN MAIN NAVIGATION BAR BEFORE DEPLOYMENT !!!!
-            {path: '/login', element: <LoginForm/>, action: authAction},
+            {path: '/login', element: <EventLoginForm/>, action: LoginEventAction},
             {path: '/register', element: <RegistrationForm/>}
         ]
     }

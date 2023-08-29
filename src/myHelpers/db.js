@@ -1,13 +1,24 @@
+/**
+ * ================================================================================
+ * FILE        : db.js
+ * AUTHOR      : Jayson O. Amodia, Kathryn Marie P. Sigaya
+ * DESCRIPTION : js file that handles the database-related helper functions
+ * COPYRIGHT   : 31 July 2023
+ * REVISION HISTORY
+ * Date:            By:        Description:
+ * 31 July 2023    Amodia      Creation of file
+ * ================================================================================
+ */
+
+import {json, redirect} from "react-router-dom";
+
 // This is the helper function file for database fetching
-
-
 // This function has no parameters 
 // (but in the future a few parameters will be added for a more customized display of data e.g. alphabetical etc.,)
 
-
 /**
- * 
- * @returns an array of object which is the result of the query.
+ *
+ * @returns an array of object which is the result of   the query.
  */
 const fetchClients = () => {
     return (
