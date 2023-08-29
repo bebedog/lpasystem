@@ -10,18 +10,21 @@ Date: 			By: 		Description:
 04 Aug 2023     Sigaya      Revised layouts, used Ant Design library
 ================================================================================
 */
-import React, {useState, useRef} from 'react';
-import ClientTable, {clientColumns} from './myTables/client'
+import React, { useState, useRef } from 'react';
+import ClientTable, { clientColumns } from './myTables/client'
 import lpaTable from './myTables/lpa'
 import forbidden from './myTables/forbidden'
 import adminView from "./myTables/admin";
 //import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
-import {Menu, Layout, theme, Button, Input, Space, Table} from 'antd';
+import { Menu, Layout, theme, Button, Input, Space, Table } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
 import mockaroo from "./myHelpers/mycompanydatabase.js";
 // database helpers
 import db from './myHelpers/db'
+
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
 
 /*
 * For the Layout and Menu documentation, go to:
@@ -61,6 +64,13 @@ const items = [
     }
 ]
 
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <LoginPage />
+    }
+])
+
 //Instantiate the Date() class to retrieve the current year for the footer
 const currentYear = new Date().getFullYear();
 
@@ -85,7 +95,6 @@ function App() {
                 return forbidden();
                 break;
         }
-        console.log('Finished Switch Case');
     }
 
     /*
@@ -101,7 +110,7 @@ function App() {
 
     //anonymous variable
     const {
-        token: {colorBgContainer}
+        token: { colorBgContainer }
     } = theme.useToken();
 
     //App function return
@@ -151,7 +160,10 @@ function App() {
                         background: colorBgContainer
                     }}>
                         {/*This is where the components will be shown after selecting the option on the navbar*/}
-                        <div>{componentSwitch(mode)}</div>
+                        {/* <div>{componentSwitch(mode)}</div> */}
+                        <RouterProvider router={router} />
+                        {/* <RouterProvider route={router} /> */}
+                        {/* <Outlet /> */}
                     </div>
                 </Content>
                 {/*Set the Footer. This is where the copyright will be displayed
@@ -164,7 +176,7 @@ function App() {
                 </Footer>
             </Layout>
         </>
-);
+    );
 }
 
 export default App;
