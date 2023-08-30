@@ -67,7 +67,7 @@ const items = [
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <LoginPage />
+        element: <ClientTable />
     }
 ])
 
@@ -166,7 +166,7 @@ function App() {
                         {/* <Outlet /> */}
                     </div>
                 </Content>
-                {/*Set the Footer. This is where the copyright will be displayed
+                {/*Set the Footer. This is where th\e copyright will be displayed
                 The 'sticky' attribute sticks the footer to the bottom of the webpage */}
                 <Footer style={{
                     textAlign: 'center',

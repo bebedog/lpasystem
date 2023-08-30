@@ -10,71 +10,56 @@ Date: 			By: 		Description:
 ================================================================================
 */
 
-import React, {useState} from 'react'
-import {Modal, Space, Descriptions} from 'antd'
+import React from 'react'
+import {Modal, Descriptions} from 'antd'
+import dayjs from 'dayjs'
 
 const ViewClientModal = ({selectedClient: myClient, open: open, onCancel: onCancel}) => {
     const client = JSON.parse(myClient)
 
     //put the column contents in separate variables because the Descriptions component
-    //doesn't accept it for some reason
+    //doesn't accept JSON accessing for some reason
     const clientID = client.clinic_id;
     const clientEmail = client.email;
-    const clientStartContract = client.contract_start
-    const clientEndContract = client.contract_end
+    const clientStartContract = dayjs(client.contract_start).format('MMM DD, YYYY')
+    const clientEndContract = dayjs(client.audit_date).format('MMM DD, YYYY')
+
+    const viewClientItems = [
+        {
+            key: "1",
+            label: "Clinic ID",
+            children: clientID
+        },
+        {
+            key: "2",
+            label: "Email Address",
+            children: clientEmail
+        },
+        {
+            key: "3",
+            label: "Start Date of Contract",
+            children: clientStartContract
+        },
+        {
+            key: "4",
+            label: "End Date of Contract",
+            children: clientEndContract
+        }
+    ]
+
 
     return (
         <Modal
             open={open}
-            title={client.clinic_name}
+            // title={client.clinic_name}
             onCancel={onCancel}>
-            {/*<Space direction='vertical'>*/}
-            {/*    <Space direction="horizontal">*/}
-            {/*        <p>ID: </p>*/}
-            {/*        <p>{client.clinic_id}</p>*/}
-            {/*    </Space>*/}
-
-            {/*    <Space direction="horizontal">*/}
-            {/*        <p>Email: </p>*/}
-            {/*        <p>{client.email_address}</p>*/}
-            {/*    </Space>*/}
-
-            {/*    <Space direction="horizontal">*/}
-            {/*        <p>Contract Start: </p>*/}
-            {/*        <p>{client.contract_start}</p>*/}
-            {/*    </Space>*/}
-
-            {/*    <Space direction="horizontal">*/}
-            {/*        <p>Contract End: </p>*/}
-            {/*        <p>{client.contract_end}</p>*/}
-            {/*    </Space>*/}
-            {/*</Space>*/}
             <Descriptions
-                title={"Details for " + client.clinic_name}
+                title={"Full Details for " + client.clinic_name}
                 bordered
-                width = {1000}
-                items={[
-                    {
-                        key: "1",
-                        label: "Clinic ID",
-                        children: clientID
-                    },
-                    {
-                        key: "2",
-                        label: "Email Address",
-                        children: clientEmail
-                    },
-                    {
-                        key: "3",
-                        label: "Start Date of Contract",
-                        children: clientStartContract
-                    },
-                    {
-                        key: "4",
-                        label: "End Date of Contract",
-                        children: clientEndContract
-                    }
-                ]}
+                layout="vertical"
+                size="small"
+                column={2}
+                items={viewClientItems}
             />
         </Modal>
     )
